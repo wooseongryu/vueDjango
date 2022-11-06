@@ -13,8 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from mysite.views import HomeView
 
@@ -22,4 +24,9 @@ from mysite.views import HomeView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
+    path('blog/', include('blog.urls')),
 ]
+
+# static함수를 사용해서 settings파일의 MEDIA_URL에 작성한 URL이 들어오면
+# MEDIA_ROOT에서 파일을 찾아서 처리한다.
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
