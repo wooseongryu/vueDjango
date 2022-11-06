@@ -1,14 +1,14 @@
 from django.db import models
 
 
-class Post(models.model):
+class Post(models.Model):
     category = models.ForeignKey(
         'Category',
         on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
-    tags = models.ManyToManyField('Tag', blank=True, null=True)
+    tags = models.ManyToManyField('Tag', blank=True)
     title = models.CharField('TITLE', max_length=50)
     description = models.CharField(
         'DESCRIPTION',
