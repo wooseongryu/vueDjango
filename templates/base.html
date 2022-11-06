@@ -32,9 +32,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#page-top">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#portfolio">Blog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#team">Iam</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-target="#page-top" href="{% url 'home' %}#page-top">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-target="#portfolio" href="{% url 'home' %}#portfolio">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-target="#team" href="{% url 'home' %}#team">Iam</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
                     </ul>
                 </div>
