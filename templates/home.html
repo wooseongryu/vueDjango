@@ -113,46 +113,5 @@
 {% endblock %}
 
 {% block extra-script %}
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
-
-
-<script>
-    const PostListApp = {
-        // 장고의 템플릿 문법과 충돌을 피하기 위함
-        delimiters: ['[[', ']]'],
-        data() {
-            return {
-                postList: [],
-            }
-        },
-        // 서버로 부터 데이터를 가져옴
-        created() {
-            console.log("created()...");
-            this.fetchPostList();
-        },
-
-        methods: {
-            fetchPostList() {
-                console.log("fetchPostList()...");
-                // 장고로 axios를 날려서 데이터를 가져온다
-                axios.get('/api/post/list/')
-                    // 성공시
-                    .then(res => {
-                        console.log("FETCH POSTLIST GET RES", res);
-                        // 장고로 부터 받은 데이터는 res.data에
-                        // 들어있고 이것을 postList변수에 넣는다
-                        this.postList = res.data;
-                    })
-                    // 실패시
-                    .catch(err => {
-                        console.log("FETCH POSTLIST GET ERR.RESPONSE", err.response);
-                        alert('${err.response.status} ${err.response.statusText}');
-                    });
-            },
-        },
-    }
-
-    Vue.createApp(PostListApp).mount('#page-top')
-</script>
+    {% include 'include/post_list_vue.html' %}
 {% endblock %}
