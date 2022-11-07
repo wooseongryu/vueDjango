@@ -12,6 +12,7 @@
         height: 300px;
         object-fit: cover;
     }
+
     .my-post-title {
         height: 60px;
     }
@@ -42,6 +43,21 @@
                     </div>
                 </div>
             </div>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
 </section>
 
@@ -121,18 +137,18 @@
                 console.log("fetchPostList()...");
                 // 장고로 axios를 날려서 데이터를 가져온다
                 axios.get('/api/post/list/')
-                // 성공시
-                .then(res => {
-                    console.log("FETCH POSTLIST GET RES", res);
-                    // 장고로 부터 받은 데이터는 res.data에
-                    // 들어있고 이것을 postList변수에 넣는다
-                    this.postList = res.data;
-                })
-                // 실패시
-                .catch(err => {
-                    console.log("FETCH POSTLIST GET ERR.RESPONSE", err.response);
-                    alert('${err.response.status} ${err.response.statusText}');
-                });
+                    // 성공시
+                    .then(res => {
+                        console.log("FETCH POSTLIST GET RES", res);
+                        // 장고로 부터 받은 데이터는 res.data에
+                        // 들어있고 이것을 postList변수에 넣는다
+                        this.postList = res.data;
+                    })
+                    // 실패시
+                    .catch(err => {
+                        console.log("FETCH POSTLIST GET ERR.RESPONSE", err.response);
+                        alert('${err.response.status} ${err.response.statusText}');
+                    });
             },
         },
     }
