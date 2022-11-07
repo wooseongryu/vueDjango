@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     path('blog/', include('blog.urls')),
+    path('api/', include('api.urls')),
 ]
 
 # static함수를 사용해서 settings파일의 MEDIA_URL에 작성한 URL이 들어오면
