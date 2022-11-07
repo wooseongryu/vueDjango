@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import BaseListView
 
 from api.utils import obj_to_post
@@ -14,3 +15,12 @@ class ApiPostLV(BaseListView):
         postList = [obj_to_post(obj) for obj in qs]
         # 최종 데이터를 JsonResponse로 클라이언트에 보낸다
         return JsonResponse(data=postList, safe=False, status=200)
+
+
+class ApiPostDV(BaseDetailView):
+    model = Post
+
+    def render_to_response(self, context, **response_kwargs):
+        obj = context['object']
+        post = obj_to_post(obj)
+        return JsonResponse(data=post, safe=True, status=200)
