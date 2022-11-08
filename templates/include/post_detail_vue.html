@@ -11,14 +11,17 @@
                 post: {},
                 prevPost: {},
                 nextPost: {},
+                cateList: [],
+                tagList: [],
             }
         },
         // 서버로 부터 데이터를 가져옴
         created() {
             console.log("created()...");
             // url에서 페이지 번호 가져옴
-            const postId = location.pathname.split('/')[3]
+            const postId = location.pathname.split('/')[3];
             this.fetchPostDetail(postId);
+            this.fetchCateTagList();
         },
 
         methods: {
@@ -38,6 +41,23 @@
                     // 실패시
                     .catch(err => {
                         console.log("FETCH POSTDETAIL GET ERR.RESPONSE", err.response);
+                        alert('${err.response.status} ${err.response.statusText}');
+                    });
+            },
+
+            fetchCateTagList() {
+                console.log("fetchCateTagList()...");
+                // 장고로 axios를 날려서 데이터를 가져온다
+                axios.get('/api/catetag/')
+                    // 성공시
+                    .then(res => {
+                        console.log("FETCH CATE-TAG-LIST GET RES", res);
+                        this.cateList = res.data.cateList;
+                        this.tagList = res.data.tagList;
+                    })
+                    // 실패시
+                    .catch(err => {
+                        console.log("FETCH CATE-TAG-LIST GET ERR.RESPONSE", err.response);
                         alert('${err.response.status} ${err.response.statusText}');
                     });
             },
