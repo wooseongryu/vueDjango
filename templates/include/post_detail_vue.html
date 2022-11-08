@@ -9,6 +9,8 @@
         data() {
             return {
                 post: {},
+                prevPost: {},
+                nextPost: {},
             }
         },
         // 서버로 부터 데이터를 가져옴
@@ -29,7 +31,9 @@
                         console.log("FETCH POSTDETAIL GET RES", res);
                         // 장고로 부터 받은 데이터는 res.data에
                         // 들어있고 이것을 postList변수에 넣는다
-                        this.post = res.data;
+                        this.post = res.data.post;
+                        this.prevPost = res.data.prevPost;
+                        this.nextPost = res.data.nextPost;
                     })
                     // 실패시
                     .catch(err => {

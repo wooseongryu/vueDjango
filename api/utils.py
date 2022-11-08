@@ -37,3 +37,27 @@ def obj_to_post(obj, flag=True):
         del post['tags'], post['update_dt'], post['description'], post['content']
 
     return post
+
+
+def prev_next_post(obj):
+    try:
+        # 장고 Model.get_next_by_FOO 함수
+        prevObj = obj.get_previous_by_update_dt()
+        prevDict = {
+            'id': prevObj.id,
+            'title': prevObj.title,
+        }
+    except obj.DoesNotExist:
+        prevDict = {}
+
+    try:
+        # 장고 Model.get_next_by_FOO 함수
+        nextObj = obj.get_next_by_update_dt()
+        nextDict = {
+            'id': nextObj.id,
+            'title': nextObj.title,
+        }
+    except obj.DoesNotExist:
+        nextDict = {}
+
+    return prevDict, nextDict
