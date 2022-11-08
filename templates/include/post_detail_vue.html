@@ -61,6 +61,15 @@
                         alert('${err.response.status} ${err.response.statusText}');
                     });
             },
+
+            serverPage(category='', tag='') {
+                console.log("serverPage()...", category, tag);
+                // 카테고리와 태그를 동시에 클릭할 순 없다
+                if (category && tag) alert(`serverPage() both args Error: ${category} and ${tag}`);
+                else if (category) location.href = `/?category=${category}#portfolio`;
+                else if (tag) location.href = `/?tag=${tag}#portfolio`;
+                else location.href = '/#portfoilo';
+            },
         },
     }
 

@@ -6,22 +6,33 @@
     const PostListApp = {
         // 장고의 템플릿 문법과 충돌을 피하기 위함
         delimiters: ['[[', ']]'],
+
         data() {
             return {
                 postList: [],
+                category: '',
+                tag: '',
             }
         },
+
         // 서버로 부터 데이터를 가져옴
         created() {
             console.log("created()...");
+            const params = new URL(location).searchParams;
+            this.category = params.get('category');
+            this.tag = params.get('tag');
             this.fetchPostList();
         },
 
         methods: {
             fetchPostList() {
-                console.log("fetchPostList()...");
+                console.log("fetchPostList()...", this.category, this.tag);
+                let getUrl = '';
+                if (this.category) getUrl = `/api/post/list/?category=${this.category}`;
+                else if (this.tag) getUrl = `/api/post/list/?tag=${this.tag}`;
+                else getUrl = '/api/post/list/';
                 // 장고로 axios를 날려서 데이터를 가져온다
-                axios.get('/api/post/list/')
+                axios.get(getUrl)
                     // 성공시
                     .then(res => {
                         console.log("FETCH POSTLIST GET RES", res);
