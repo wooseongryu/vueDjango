@@ -11,6 +11,7 @@ from blog.models import Post, Category, Tag, Comment
 class ApiPostLV(BaseListView):
     # get_queryset을 정의하면 아래 줄은 필요 없음
     # model = Post
+    paginate_by = 2
 
     def get_queryset(self):
         paramCate = self.request.GET.get('category')
@@ -29,6 +30,10 @@ class ApiPostLV(BaseListView):
         # obj_to_post함수로 시리얼라이제이션을 함
         postList = [obj_to_post(obj, False) for obj in qs]
         # 최종 데이터를 JsonResponse로 클라이언트에 보낸다
+
+        pageCnt = context['paginator'].num_pages
+        curPage = context['page_obj'].number
+        print(pageCnt, curPage)
         return JsonResponse(data=postList, safe=False, status=200)
 
 
