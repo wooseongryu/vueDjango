@@ -12,9 +12,11 @@
         height: 300px;
         object-fit: cover;
     }
-
     .my-post-title {
         height: 60px;
+    }
+    .my-link:hover {
+        cursor: pointer;
     }
 </style>
 {% endblock %}
@@ -52,19 +54,15 @@
 
             <!-- My Pagination -->
             <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
+                <li :class="prevClass">
                     <div @click="prevPage" class="page-link">Prev</div>
                 </li>
 
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-
-                <li v-for="page in pages" class="page-item">
+                <li v-for="page in pages" :class="pageClass(page)">
                     <div @click="pageChanged(page)" class="page-link">[[ page ]]</div>
                 </li>
 
-                <li class="page-item">
+                <li :class="nextClass">
                     <div @click="nextPage" class="page-link">Next</div>
                 </li>
             </ul>

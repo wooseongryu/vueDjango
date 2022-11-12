@@ -29,6 +29,20 @@
                 }
                 return pages3
             },
+
+            prevClass() {
+                console.log("prevClass()...");
+                if (this.curPage === 1) return 'page-item disabled';
+                else return 'page-item my-link';
+            },
+
+            nextClass() {
+                console.log("nextClass()...");
+                if (this.curPage === this.pageCnt) return 'page-item disabled';
+                else return 'page-item my-link';
+            },
+
+            // pageClass(page) {},
         },
 
         // 서버로 부터 데이터를 가져옴
@@ -83,6 +97,12 @@
                 if (this.curPage >= this.pageCnt) return;
                 else this.curPage = this.curPage + 1;
                 this.fetchPostList(this.curPage);
+            },
+
+            pageClass(page) {
+                console.log("pageClass()...");
+                if (this.curPage === page) return 'page-item my-link active';
+                else return 'page-item my-link';
             },
         },
     }
