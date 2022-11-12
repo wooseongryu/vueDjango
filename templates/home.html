@@ -51,23 +51,23 @@
             </div>
 
             <!-- My Pagination -->
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link">Previous</a>
-                    </li>
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <div @click="prevPage" class="page-link">Prev</div>
+                </li>
 
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
 
-                    <li v-for="page in pages" class="page-item">
-                        <a class="page-link" href="#">[[ page ]]</a>
-                    </li>
+                <li v-for="page in pages" class="page-item">
+                    <div @click="pageChanged(page)" class="page-link">[[ page ]]</div>
+                </li>
 
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
+                <li class="page-item">
+                    <div @click="nextPage" class="page-link">Next</div>
+                </li>
+            </ul>
 
         </div>
 </section>
@@ -124,5 +124,5 @@
 {% endblock %}
 
 {% block extra-script %}
-    {% include 'include/post_list_vue.html' %}
+{% include 'include/post_list_vue.html' %}
 {% endblock %}
