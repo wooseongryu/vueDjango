@@ -3,6 +3,11 @@
 
 
 <script>
+    // axios를 보낼 때 참조할 쿠키이름
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    //해당 쿠키 값을 가져와서 그 쿠키 값을 담을 헤드이름
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+
     const PostDetailApp = {
         // 장고의 템플릿 문법과 충돌을 피하기 위함
         delimiters: ['[[', ']]'],
@@ -84,6 +89,27 @@
                         console.log("LIKE-COUNT GET ERR.RESPONSE", err.response);
                         alert('${err.response.status} ${err.response.statusText}');
                     });
+            },
+
+            resetForm() {
+                console.log('resetForm()...');
+                this.$refs.commentForm.reset();
+            },
+
+            submitForm() {
+                console.log('submitForm()...');
+                let formdata = new FormData(document.getElementById('comment-form'));
+                formdata.set('post', this.post.id);
+                axios.post('/api/comment/create/', formdata)
+                    .then(res => {
+                        console.log("CREATE-COMMENT POST RES", res);
+                        this.commentList.push(res.data);
+                    })
+                    .catch(err => {
+                        console.log("CREATE-COMMENT GET ERR.RESPONSE", err.response);
+                        alert('${err.response.status} ${err.response.statusText}');
+                    });
+                this.resetForm();
             },
         },
     }

@@ -1,10 +1,11 @@
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic.detail import BaseDetailView
+from django.views.generic.edit import BaseCreateView
 from django.views.generic.list import BaseListView
 
 from api.utils import obj_to_post, prev_next_post, obj_to_comment
-from blog.models import Post, Category, Tag
+from blog.models import Post, Category, Tag, Comment
 
 
 class ApiPostLV(BaseListView):
@@ -67,8 +68,23 @@ class ApiCateTagView(View):
 class ApiPostLikeDV(BaseDetailView):
     model = Post
 
+    # listview나 detailview에서 최종 응답을 하는 메소드
     def render_to_response(self, context, **response_kwargs):
         obj = context['object']
         obj.like += 1
         obj.save()
         return JsonResponse(data=obj.like, safe=False, status=200)
+
+
+class ApiCommentCV(BaseCreateView):
+    model = Comment
+    fields = '__all__'
+
+    # 폼을 처리하는 뷰에서 최종 응답을 하는 메소드
+    def form_valid(self, form):
+        self.object = form.save()
+        comment = obj_to_comment(self.object)
+        return JsonResponse(data=comment, safe=True, status=200)
+
+    def form_invalid(self, form):
+        return JsonResponse(data=form.errors, safe=True, status=400)
