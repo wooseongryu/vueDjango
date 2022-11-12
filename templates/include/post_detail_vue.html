@@ -13,6 +13,7 @@
                 nextPost: {},
                 cateList: [],
                 tagList: [],
+                commentList: [],
             }
         },
         // 서버로 부터 데이터를 가져옴
@@ -37,6 +38,7 @@
                         this.post = res.data.post;
                         this.prevPost = res.data.prevPost;
                         this.nextPost = res.data.nextPost;
+                        this.commentList = res.data.commentList;
                     })
                     // 실패시
                     .catch(err => {
