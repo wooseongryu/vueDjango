@@ -11,7 +11,7 @@ from blog.models import Post, Category, Tag, Comment
 class ApiPostLV(BaseListView):
     # get_queryset을 정의하면 아래 줄은 필요 없음
     # model = Post
-    paginate_by = 2
+    paginate_by = 3
 
     def get_queryset(self):
         paramCate = self.request.GET.get('category')
@@ -33,8 +33,14 @@ class ApiPostLV(BaseListView):
 
         pageCnt = context['paginator'].num_pages
         curPage = context['page_obj'].number
-        print(pageCnt, curPage)
-        return JsonResponse(data=postList, safe=False, status=200)
+        # print(pageCnt, curPage)
+
+        jsonData = {
+            'postList': postList,
+            'pageCnt': pageCnt,
+            'curPage': curPage,
+        }
+        return JsonResponse(data=jsonData, safe=True, status=200)
 
 
 class ApiPostDV(BaseDetailView):
