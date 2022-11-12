@@ -8,6 +8,7 @@ from blog.models import Post, Category, Tag
 
 
 class ApiPostLV(BaseListView):
+    # get_queryset을 정의하면 아래 줄은 필요 없음
     # model = Post
 
     def get_queryset(self):
@@ -22,6 +23,7 @@ class ApiPostLV(BaseListView):
         return qs
 
     def render_to_response(self, context, **response_kwargs):
+        # get_queryset에서 return한 값이 object_list이다.
         qs = context['object_list']
         # obj_to_post함수로 시리얼라이제이션을 함
         postList = [obj_to_post(obj, False) for obj in qs]
@@ -56,3 +58,13 @@ class ApiCateTagView(View):
             'tagList': tagList,
         }
         return JsonResponse(data=jsonData, safe=True, status=200)
+
+
+class ApiPostLikeDV(BaseDetailView):
+    model = Post
+
+    def render_to_response(self, context, **response_kwargs):
+        obj = context['object']
+        obj.like += 1
+        obj.save()
+        return JsonResponse(data=obj.like, safe=False, status=200)
