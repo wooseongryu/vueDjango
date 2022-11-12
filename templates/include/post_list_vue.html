@@ -3,6 +3,8 @@
 
 
 <script>
+    const myJson = JSON.parse('{{ myJson|escapejs }}');
+
     const PostListApp = {
         // 장고의 템플릿 문법과 충돌을 피하기 위함
         delimiters: ['[[', ']]'],
@@ -51,7 +53,10 @@
             const params = new URL(location).searchParams;
             this.category = params.get('category');
             this.tag = params.get('tag');
-            this.fetchPostList();
+            // this.fetchPostList();
+            this.postList = myJson.postList;
+            this.pageCnt = myJson.pageCnt;
+            this.curPage = myJson.curPage;
         },
 
         methods: {
