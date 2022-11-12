@@ -8,6 +8,11 @@
     //해당 쿠키 값을 가져와서 그 쿠키 값을 담을 헤드이름
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
+    // 장고에서 넘어온 JSON문자열을 자바스크립트에서 인식하기 위해서
+    // escapejs필터를 적용하고 따옴표를 감싸고
+    // JSON.parse로 파싱해서 myJson객체로 만듦
+    const myJson = JSON.parse('{{ myJson|escapejs }}');
+
     const PostDetailApp = {
         // 장고의 템플릿 문법과 충돌을 피하기 위함
         delimiters: ['[[', ']]'],
@@ -25,9 +30,15 @@
         created() {
             console.log("created()...");
             // url에서 페이지 번호 가져옴
-            const postId = location.pathname.split('/')[3];
-            this.fetchPostDetail(postId);
-            this.fetchCateTagList();
+            // const postId = location.pathname.split('/')[3];
+            // this.fetchPostDetail(postId);
+            // this.fetchCateTagList();
+            this.post = myJson.post;
+            this.prevPost = myJson.prevPost;
+            this.nextPost = myJson.nextPost;
+            this.commentList = myJson.commentList;
+            this.cateList = myJson.cateList;
+            this.tagList = myJson.tagList;
         },
 
         methods: {
