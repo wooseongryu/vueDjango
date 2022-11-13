@@ -1,5 +1,7 @@
 import json
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import TemplateView, ListView
 
 from api.utils import obj_to_post
@@ -9,6 +11,8 @@ from blog.models import Post
 #     template_name = 'home.html'
 
 
+# ensure_csrf_cookie는 쿠키가 있으면 아무것도 안하고 없으면 만들어서 응답에 넣는다
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class HomeView(ListView):
     # model = Post
     template_name = 'home.html'
