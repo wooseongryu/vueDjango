@@ -22,7 +22,7 @@ class ApiPostLV(BaseListView):
             qs = Post.objects.filter(tags__name__iexact=paramTag)
         else:
             qs = Post.objects.all()
-        return qs
+        return qs.select_related('category').prefetch_related('tags')
 
     def render_to_response(self, context, **response_kwargs):
         # get_queryset에서 return한 값이 object_list이다.
@@ -44,7 +44,10 @@ class ApiPostLV(BaseListView):
 
 
 class ApiPostDV(BaseDetailView):
-    model = Post
+    # model = Post
+
+    def get_queryset(self):
+        return Post.objects.all().select_related('category').prefetch_related('tags', 'comment_set')
 
     def render_to_response(self, context, **response_kwargs):
         obj = context['object']
