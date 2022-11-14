@@ -11,7 +11,7 @@ from blog.models import Post, Category, Tag, Comment
 class ApiPostLV(BaseListView):
     # get_queryset을 정의하면 아래 줄은 필요 없음
     # model = Post
-    paginate_by = 3
+    paginate_by = 33
 
     def get_queryset(self):
         paramCate = self.request.GET.get('category')
