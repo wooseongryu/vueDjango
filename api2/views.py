@@ -28,6 +28,7 @@ from rest_framework.views import APIView
 
 # from api2.serializers import CommentSerializer, PostListSerializer, PostRetrieveSerializer, PostLikeSerializer, \
 #     CateTagSerializer
+from api.utils import obj_to_post, prev_next_post, obj_to_comment
 from api2.serializers import CommentSerializer, PostListSerializer, PostRetrieveSerializer, \
     CateTagSerializer, PostSerializerDetail
 from blog.models import Post, Comment, Category, Tag
@@ -139,28 +140,45 @@ def get_prev_next(instance):
 
 
 class PostRetrieveAPIView(RetrieveAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializerDetail
+    # queryset = Post.objects.all()
+    # serializer_class = PostSerializerDetail
+    
+    def get_queryset(self):
+        return Post.objects.all().select_related('category').prefetch_related('tags', 'comment_set')
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        prevInstance, nextInstance = get_prev_next(instance)
+        # prevInstance, nextInstance = get_prev_next(instance)
         commentList = instance.comment_set.all()
-        data = {
-            'post': instance,
-            'prevPost': prevInstance,
-            'nextPost': nextInstance,
-            'commentList': commentList,
-        }
-        serializer = self.get_serializer(instance=data)
-        return Response(serializer.data)
 
-    def get_serializer_context(self):
-        """
-        Extra context provided to the serializer class.
-        """
-        return {
-            'request': None,
-            'format': self.format_kwarg,
-            'view': self
+        postDict = obj_to_post(instance)
+        prevDict, nextDict = prev_next_post(instance)
+        commentDict = [obj_to_comment(c) for c in commentList]
+
+        dataDict = {
+            'post': postDict,
+            'prevPost': prevDict,
+            'nextPost': nextDict,
+            'commentList': commentDict,
         }
+
+        return Response(dataDict)
+
+        # data = {
+        #     'post': instance,
+        #     'prevPost': prevInstance,
+        #     'nextPost': nextInstance,
+        #     'commentList': commentList,
+        # }
+        # serializer = self.get_serializer(instance=data)
+        # return Response(serializer.data)
+
+    # def get_serializer_context(self):
+    #     """
+    #     Extra context provided to the serializer class.
+    #     """
+    #     return {
+    #         'request': None,
+    #         'format': self.format_kwarg,
+    #         'view': self
+    #     }
