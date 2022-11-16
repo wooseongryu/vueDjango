@@ -29,7 +29,7 @@ from rest_framework.views import APIView
 # from api2.serializers import CommentSerializer, PostListSerializer, PostRetrieveSerializer, PostLikeSerializer, \
 #     CateTagSerializer
 from api2.serializers import CommentSerializer, PostListSerializer, PostRetrieveSerializer, \
-    CateTagSerializer
+    CateTagSerializer, PostSerializerDetail
 from blog.models import Post, Comment, Category, Tag
 
 
@@ -38,9 +38,9 @@ class PostListAPIView(ListAPIView):
     serializer_class = PostListSerializer
 
 
-class PostRetrieveAPIView(RetrieveAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostRetrieveSerializer
+# class PostRetrieveAPIView(RetrieveAPIView):
+#     queryset = Post.objects.all()
+#     serializer_class = PostRetrieveSerializer
 
 
 class CommentCreateAPIView(CreateAPIView):
@@ -123,3 +123,34 @@ class PostListAPIView(ListAPIView):
             'format': self.format_kwarg,
             'view': self
         }
+
+def get_prev_next(instance):
+    try:
+        prev = instance.get_previous_by_update_dt()
+    except instance.DoesNotExist:
+        prev = None
+
+    try:
+        next_ = instance.get_next_by_update_dt()
+    except instance.DoesNotExist:
+        next_ = None
+
+    return prev, next_
+
+
+class PostRetrieveAPIView(RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializerDetail
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        prevInstance, nextInstance = get_prev_next(instance)
+        commentList = instance.comment_set.all()
+        data = {
+            'post': instance,
+            'prevPost': prevInstance,
+            'nextPost': nextInstance,
+            'commentList': commentList,
+        }
+        serializer = self.get_serializer(instance=data)
+        return Response(serializer.data)
