@@ -11,6 +11,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostListSerializer(serializers.ModelSerializer):
+    category = serializers.CharField(source='category.name')
+    
     class Meta:
         model = Post
         # fields = '__all__'

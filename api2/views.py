@@ -19,7 +19,10 @@
 #     queryset = Comment.objects.all()
 #     serializer_class = CommentSerializer
 #------------------------------------------------
+from collections import OrderedDict
+
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, GenericAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -92,3 +95,21 @@ class CateTagAPIView(APIView):
         serializer = CateTagSerializer(instance=data)
         return Response(serializer.data)
 
+
+class PostPageNumberPagination(PageNumberPagination):
+    page_size = 3
+    # page_size_query_param = 'page_size'
+    # max_page_size = 1000
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('postList', data),
+            ('pageCnt', self.page.paginator.num_pages),
+            ('curPage', self.page.number),
+        ]))
+
+
+class PostListAPIView(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostListSerializer
+    pagination_class = PostPageNumberPagination
